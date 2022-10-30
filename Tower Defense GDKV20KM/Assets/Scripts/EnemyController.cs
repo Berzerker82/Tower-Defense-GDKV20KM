@@ -10,10 +10,19 @@ public class EnemyController : MonoBehaviour
     private int currentPoint;
     private bool reachedEnd;
 
+    public float timeBetweenAttacks, damagePerAttack;
+    private float attackCounter;
+
+    private Base theBase;
+
     // Start is called before the first frame update
     void Start()
     {
         thePath = FindObjectOfType<Path>();
+
+        theBase = FindObjectOfType<Base>();
+
+        attackCounter = timeBetweenAttacks;
     }
 
     // Update is called once per frame
@@ -34,5 +43,17 @@ public class EnemyController : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            attackCounter -= Time.deltaTime;
+
+            if (attackCounter <= 0)
+            {
+                attackCounter = timeBetweenAttacks;
+
+                theBase.TakeDamage(damagePerAttack);
+            }
+        }
+        
     }
 }
